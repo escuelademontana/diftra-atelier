@@ -185,7 +185,7 @@
   .project-hero-bg {
     position: absolute;
     inset: 0;
-    background-image: url('../Nosotros/nosotros.png');
+    background-image: url('file:///Users/belu/Desktop/Diftra/Nosotros/nosotros.png');
     background-size: cover;
     background-position: center;
     transform: scale(1.05);
@@ -229,7 +229,7 @@
     font-size: 0.55rem;
     letter-spacing: 0.35em;
     text-transform: uppercase;
-    color: rgba(245,240,235,0.3);
+    color: var(--acento);
     margin-bottom: 3rem;
     padding: 0 4rem;
   }
@@ -446,10 +446,10 @@
   }
   .nosotros-hero::after { content:""; position:absolute; inset:0; background:linear-gradient(to top,rgba(10,10,10,0.8) 0%,rgba(10,10,10,0.15) 60%,transparent 100%); }
   .nosotros-hero-content { position:relative; z-index:2; }
-  .nosotros-label { font-size:0.55rem; letter-spacing:0.35em; text-transform:uppercase; color:rgba(245,240,235,0.5); margin-bottom:0.8rem; }
+  .nosotros-label { font-size:0.55rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--acento); margin-bottom:0.8rem; }
   .nosotros-title { font-family:"CyGroteskGrand",sans-serif; font-size:clamp(4rem,10vw,9rem); font-weight:300; color:var(--blanco); letter-spacing:-0.02em; line-height:0.9; margin:0; }
   .nos-section { display:grid; grid-template-columns:1fr 1.6fr; gap:4rem; padding:6rem 4rem; border-top:1px solid rgba(245,240,235,0.07); }
-  .nos-section-label { font-size:0.55rem; letter-spacing:0.35em; text-transform:uppercase; color:rgba(245,240,235,0.35); padding-top:0.3rem; position:sticky; top:6rem; height:fit-content; }
+  .nos-section-label { font-size:0.55rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--acento); padding-top:0.3rem; position:sticky; top:6rem; height:fit-content; }
   .nos-section-body strong { display:block; font-family:var(--dm); font-size:clamp(1.8rem,3.5vw,3rem); font-weight:300; line-height:1.15; color:var(--blanco); margin-bottom:2rem; }
   .nos-section-body p { font-family:var(--dm); font-size:0.9rem; line-height:1.9; color:rgba(245,240,235,0.65); margin-bottom:1.2rem; }
   .nos-grid { display:grid; gap:3px; }
@@ -469,6 +469,16 @@
     .nos-section-label { position:static; }
     .nos-grid-3 { grid-template-columns:1fr 1fr; }
     .nos-cierre { padding:5rem 1.5rem; }
+  }
+
+  @media (min-width: 1440px) {
+    .nosotros-hero-content,
+    .nos-section,
+    .nos-cierre {
+      width: min(100%, 1440px);
+      margin-left: auto;
+      margin-right: auto;
+    }
   }
 </style>
 </head>
@@ -495,7 +505,7 @@
     </li>
     <li><a href="muebles.html">Muebles</a></li>
     <li><a href="nosotros.html" class="active">Nosotros</a></li>
-    <li><a href="diftra-atelier_11.html#cierre">Contacto</a></li>
+    <li><a href="https://wa.me/5492944290582" target="_blank" rel="noopener">Contacto</a></li>
   </ul>
 </nav>
 
@@ -512,10 +522,9 @@
 <div class="nos-section">
   <div class="nos-section-label reveal">Quiénes somos</div>
   <div class="nos-section-body">
-    <strong class="reveal">Un espacio de exploración<br>material, diseño y oficio.</strong>
-    <p class="reveal reveal-delay-1">Diftra Atelier nace en la Patagonia como un espacio de exploración material, diseño y oficio. Creamos muebles y objetos donde la funcionalidad convive con una mirada sensible sobre las formas, las texturas y el paso del tiempo. Cada pieza es concebida como un objeto único, pensado desde el detalle y construido artesanalmente para perdurar.</p>
-    <p class="reveal reveal-delay-2">Entendemos el proceso creativo como un espacio entre amigos de búsqueda, experimentación y disfrute compartido. Nos interesa trabajar desde la curiosidad, el desafío técnico y la sensibilidad del hacer, dejando que cada proyecto encuentre su propio lenguaje y carácter.</p>
-    <p class="reveal reveal-delay-3">Más que fabricar muebles, buscamos desarrollar piezas con identidad, propósito y presencia.</p>
+    <p class="reveal reveal-delay-1">Diftra Atelier nace en San Martin de los Andes, a orillas del Rio Quilquihue, como un espacio de exploración material, diseño y oficio.</p>
+    <p class="reveal reveal-delay-2">Creamos muebles y objetos donde la funcionalidad convive con una mirada sensible sobre las formas, las texturas y el paso del tiempo. Cada pieza es concebida como un objeto único, pensado desde el detalle y construido artesanalmente desafiándonos en busca de nuevas formas.</p>
+    <p class="reveal reveal-delay-3">Entendemos el proceso creativo como un espacio entre amigos de experimentación y disfrute compartido. Nos interesa trabajar desde la curiosidad, el desafío técnico y la sensibilidad del hacer, dejando que cada proyecto encuentre su propio lenguaje y carácter. Más que fabricar muebles, buscamos desarrollar piezas con identidad, propósito y presencia.</p>
   </div>
 </div>
 
@@ -548,7 +557,7 @@
 <!-- CIERRE -->
 <div class="nos-cierre">
   <p class="nos-cierre-quote reveal">"Cada pieza que hacemos lleva consigo la huella de quienes la construyeron y la historia de los materiales que la conforman."</p>
-  <a href="diftra-atelier_11.html#cierre" class="nos-cierre-btn reveal reveal-delay-1">Hablemos</a>
+  <a href="https://wa.me/5492944290582" target="_blank" rel="noopener" class="nos-cierre-btn reveal reveal-delay-1">Hablemos</a>
 </div>
 <footer>
   <div style="display:flex; justify-content:space-between; align-items:center;">
