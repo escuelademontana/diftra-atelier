@@ -454,18 +454,41 @@
   .page-header-content { position: relative; z-index: 2; }
   .page-header-label { font-size:0.55rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--acento); margin-bottom:1rem; }
   .page-header-title { font-family:'CyGroteskGrand',sans-serif; font-size:clamp(3.5rem,8vw,7rem); font-weight:300; color:var(--blanco); letter-spacing:-0.02em; line-height:0.9; margin:0; }
-  .carousel-section { padding:5rem 0 0; border-top:1px solid rgba(245,240,235,0.06); }
+  .carousel-section { position:relative; padding:5rem 0 0; border-top:1px solid rgba(245,240,235,0.06); }
   .carousel-header { display:flex; justify-content:space-between; align-items:center; padding:0 4rem 2rem; }
   .carousel-label { font-size:0.6rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--acento); }
   .carousel-controls { display:flex; gap:1rem; }
   .carousel-btn { background:none; border:1px solid rgba(245,240,235,0.2); color:rgba(245,240,235,0.6); width:2.5rem; height:2.5rem; cursor:none; font-size:1rem; transition:border-color 0.3s,color 0.3s; }
   .carousel-btn:hover { border-color:var(--acento); color:var(--acento); }
-  .carousel-track-wrap { overflow:hidden; padding-left:4rem; }
+  .carousel-track-wrap { overflow:hidden; padding-left:4rem; touch-action:pan-y; user-select:none; }
+  .carousel-track-wrap.dragging .carousel-track { transition:none; }
+  .carousel-track-wrap.dragging .slide img { pointer-events:none; }
   .carousel-track { display:flex; gap:3px; transition:transform 0.5s cubic-bezier(0.4,0,0.2,1); }
   .slide { flex:0 0 auto; width:380px; overflow:hidden; }
   .slide img { width:100%; height:500px; object-fit:cover; display:block; transition:transform 0.6s ease; }
   .slide:hover img { transform:scale(1.03); }
   @media(min-width:1025px) {
+    .carousel-controls {
+      position:absolute;
+      left:0;
+      right:0;
+      top:calc(5rem + 250px);
+      z-index:4;
+      display:flex;
+      justify-content:space-between;
+      gap:0;
+      padding:0 1.5rem;
+      pointer-events:none;
+    }
+    .carousel-btn {
+      width:3rem;
+      height:3rem;
+      background:rgba(10,10,10,0.44);
+      border-color:rgba(245,240,235,0.28);
+      color:rgba(245,240,235,0.78);
+      backdrop-filter:blur(10px);
+      pointer-events:auto;
+    }
     #cat-interior .carousel-controls { display:none; }
     #cat-interior .carousel-track-wrap {
       overflow:visible;
@@ -511,6 +534,8 @@
   @media(max-width:1024px) {
     .page-header { padding:8rem 1.5rem 3rem; }
     .carousel-header { padding:0 1.5rem 1.5rem; }
+    .carousel-controls { position:static; padding:0; pointer-events:auto; }
+    .carousel-btn { background:none; backdrop-filter:none; }
     .carousel-track-wrap { padding-left:1.5rem; }
     .slide { width:280px; }
     .slide img { height:380px; }
@@ -744,21 +769,78 @@
       mueblesBg.style.transform = 'scale(1.05) translateY(' + (window.pageYOffset * 0.3) + 'px)';
     });
   }
+  var carouselDragMoved = false;
+  function clampCarouselOffset(track, value) {
+    var maxScroll = Math.max(0, track.scrollWidth - track.parentElement.offsetWidth);
+    return Math.max(0, Math.min(value, maxScroll));
+  }
+  function setCarouselOffset(track, value) {
+    var current = clampCarouselOffset(track, value);
+    track.dataset.offset = current;
+    track.style.transform = 'translateX(-' + current + 'px)';
+  }
   document.querySelectorAll('.carousel-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
       var id = this.dataset.id;
       var track = document.getElementById('track-' + id);
+      if (!track) return;
       var slideW = track.querySelector('.slide').offsetWidth + 3;
       var step = slideW * 2;
       var current = parseInt(track.dataset.offset || 0);
-      var maxScroll = track.scrollWidth - track.parentElement.offsetWidth;
       if (this.classList.contains('next')) {
-        current = Math.min(current + step, maxScroll);
+        current += step;
       } else {
-        current = Math.max(current - step, 0);
+        current -= step;
       }
-      track.dataset.offset = current;
-      track.style.transform = 'translateX(-' + current + 'px)';
+      setCarouselOffset(track, current);
+    });
+  });
+  document.querySelectorAll('.carousel-track-wrap').forEach(function(wrap) {
+    var track = wrap.querySelector('.carousel-track');
+    if (!track || !track.querySelector('.slide')) return;
+
+    var startX = 0;
+    var startOffset = 0;
+    var isDragging = false;
+    var pointerId = null;
+
+    function endDrag() {
+      if (!isDragging) return;
+      isDragging = false;
+      wrap.classList.remove('dragging');
+      if (pointerId !== null && wrap.releasePointerCapture) {
+        try { wrap.releasePointerCapture(pointerId); } catch (err) {}
+      }
+      setTimeout(function() { carouselDragMoved = false; }, 90);
+    }
+
+    wrap.addEventListener('pointerdown', function(e) {
+      if (track.scrollWidth <= wrap.offsetWidth) return;
+      isDragging = true;
+      pointerId = e.pointerId;
+      startX = e.clientX;
+      startOffset = parseInt(track.dataset.offset || 0);
+      carouselDragMoved = false;
+      wrap.classList.add('dragging');
+      if (wrap.setPointerCapture) {
+        try { wrap.setPointerCapture(pointerId); } catch (err) {}
+      }
+    });
+    wrap.addEventListener('pointermove', function(e) {
+      if (!isDragging) return;
+      var delta = e.clientX - startX;
+      if (Math.abs(delta) > 6) carouselDragMoved = true;
+      setCarouselOffset(track, startOffset - delta);
+    });
+    wrap.addEventListener('pointerup', endDrag);
+    wrap.addEventListener('pointercancel', endDrag);
+    wrap.addEventListener('pointerleave', function(e) {
+      if (isDragging && e.pointerType === 'mouse') endDrag();
+    });
+  });
+  window.addEventListener('resize', function() {
+    document.querySelectorAll('.carousel-track').forEach(function(track) {
+      setCarouselOffset(track, parseInt(track.dataset.offset || 0));
     });
   });
 </script>
@@ -801,7 +883,14 @@
     var srcs = Array.from(imgs).map(function(img){ return img.getAttribute('src'); });
     imgs.forEach(function(img, i) {
       img.parentElement.style.cursor = 'pointer';
-      img.parentElement.onclick = function() { openLB(srcs, i); };
+      img.parentElement.onclick = function(e) {
+        if (carouselDragMoved) {
+          e.preventDefault();
+          carouselDragMoved = false;
+          return;
+        }
+        openLB(srcs, i);
+      };
     });
   });
 </script>
