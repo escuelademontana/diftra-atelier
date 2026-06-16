@@ -391,6 +391,7 @@
     .gallery-grid-2-1 { grid-template-columns: 1fr 1fr; }
     .gallery-grid-3   { grid-template-columns: 1fr 1fr; }
     .gallery-grid-3 > *:last-child { grid-column: 1 / -1; aspect-ratio: 16/9; }
+    .chess-gallery > *:last-child { grid-column: auto; aspect-ratio: 3/4; }
     .gallery-grid-2   { grid-template-columns: 1fr 1fr; }
 
     .other-project-card { max-width: none !important; }
@@ -498,11 +499,100 @@
     background-position: center;
   }
 </style>
+
+<style id="piper-lightbox-styles">
+  .details-with-image img,
+  .galeria-wrap img {
+    cursor: zoom-in;
+  }
+
+  .piper-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5rem 4rem;
+    background: rgba(8, 8, 8, 0.92);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.28s ease;
+  }
+
+  .piper-lightbox.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .piper-lightbox img {
+    max-width: min(100%, 1200px);
+    max-height: 82vh;
+    object-fit: contain;
+    box-shadow: 0 22px 80px rgba(0, 0, 0, 0.45);
+  }
+
+  .piper-lightbox-close {
+    position: absolute;
+    top: 1.6rem;
+    right: 1.6rem;
+    width: 3rem;
+    height: 3rem;
+    border: 1px solid rgba(245, 240, 235, 0.25);
+    background: rgba(10, 10, 10, 0.4);
+    color: var(--blanco);
+    font-size: 1.6rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .piper-lightbox-caption {
+    position: absolute;
+    left: 4rem;
+    bottom: 2rem;
+    max-width: calc(100% - 8rem);
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(245, 240, 235, 0.68);
+  }
+
+  body.lightbox-open {
+    overflow: hidden;
+  }
+
+  @media (max-width: 768px) {
+    .piper-lightbox {
+      padding: 4rem 1rem;
+    }
+
+    .piper-lightbox img {
+      max-height: 78vh;
+    }
+
+    .piper-lightbox-close {
+      top: 1rem;
+      right: 1rem;
+    }
+
+    .piper-lightbox-caption {
+      left: 1rem;
+      bottom: 1.25rem;
+      max-width: calc(100% - 2rem);
+    }
+  }
+</style>
 </head>
 <body>
 
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
+
+<div class="piper-lightbox" id="piperLightbox" aria-hidden="true">
+  <button class="piper-lightbox-close" type="button" aria-label="Cerrar imagen">&times;</button>
+  <img src="" alt="" id="piperLightboxImg">
+  <div class="piper-lightbox-caption" id="piperLightboxCaption"></div>
+</div>
 
 <nav>
   <a href="diftra-atelier_11.html" class="nav-logo">
@@ -623,12 +713,24 @@
   <!-- Juego ajedrez -->
   <div class="section-label reveal" style="padding: 3rem 4rem 1.5rem;">Juego ajedrez</div>
 
-  <div class="gallery-grid-2" style="padding-bottom:5rem;">
+  <div class="gallery-grid-3 chess-gallery" style="padding-bottom:5rem;">
     <div class="reveal" style="overflow:hidden; aspect-ratio:3/4;">
-      <img loading="lazy" decoding="async" src="imagenes-piper/exterior.png" alt="Juego ajedrez" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease;">
+      <img loading="lazy" decoding="async" src="juego ajedrez 1.jpeg" alt="Juego ajedrez 1" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease;">
     </div>
     <div class="reveal reveal-delay-1" style="overflow:hidden; aspect-ratio:3/4;">
-      <img loading="lazy" decoding="async" src="imagenes-piper/mesa-chapa.jpeg" alt="Mesa ajedrez" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease;">
+      <img loading="lazy" decoding="async" src="juego ajedrez 2.jpeg" alt="Juego ajedrez 2" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease;">
+    </div>
+    <div class="reveal reveal-delay-2" style="overflow:hidden; aspect-ratio:3/4;">
+      <img loading="lazy" decoding="async" src="juego ajedrez 3.jpeg" alt="Juego ajedrez 3" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease;">
+    </div>
+    <div class="reveal" style="overflow:hidden; aspect-ratio:3/4;">
+      <img loading="lazy" decoding="async" src="juego ajedrez 4.jpeg" alt="Juego ajedrez 4" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease;">
+    </div>
+    <div class="reveal reveal-delay-1" style="overflow:hidden; aspect-ratio:3/4;">
+      <img loading="lazy" decoding="async" src="juego ajedrez 5.jpeg" alt="Juego ajedrez 5" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease;">
+    </div>
+    <div class="reveal reveal-delay-2" style="overflow:hidden; aspect-ratio:3/4;">
+      <img loading="lazy" decoding="async" src="juego ajedrez 6.jpeg" alt="Juego ajedrez 6" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease;">
     </div>
   </div>
 
@@ -745,7 +847,7 @@
     requestAnimationFrame(animRing);
   }
   animRing();
-  document.querySelectorAll('a, button').forEach(el => {
+  document.querySelectorAll('a, button, .details-with-image img, .galeria-wrap img').forEach(el => {
     el.addEventListener('mouseenter', () => {
       ring.style.width = '56px'; ring.style.height = '56px';
       ring.style.borderColor = 'rgba(201,169,110,0.6)';
@@ -763,6 +865,49 @@
     });
   }, { threshold: 0.15 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Project image lightbox
+  const lightbox = document.getElementById('piperLightbox');
+  const lightboxImg = document.getElementById('piperLightboxImg');
+  const lightboxCaption = document.getElementById('piperLightboxCaption');
+  const lightboxClose = lightbox.querySelector('.piper-lightbox-close');
+
+  function openLightbox(img) {
+    lightboxImg.src = img.currentSrc || img.src;
+    lightboxImg.alt = img.alt || 'Imagen Piper Navajo';
+    lightboxCaption.textContent = img.alt || '';
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('lightbox-open');
+    lightboxClose.focus();
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('lightbox-open');
+    lightboxImg.src = '';
+  }
+
+  document.querySelectorAll('.details-with-image img, .galeria-wrap img').forEach(img => {
+    img.setAttribute('role', 'button');
+    img.setAttribute('tabindex', '0');
+    img.addEventListener('click', () => openLightbox(img));
+    img.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openLightbox(img);
+      }
+    });
+  });
+
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', e => {
+    if (e.target === lightbox) closeLightbox();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
+  });
 
   // Parallax hero
   const heroBg = document.getElementById('heroBg');
