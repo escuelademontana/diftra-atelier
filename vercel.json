@@ -1,0 +1,62 @@
+{
+  "redirects": [
+    {
+      "source": "/namaste.html",
+      "destination": "/namaste/",
+      "permanent": true
+    },
+    {
+      "source": "/piper-navajo.html",
+      "destination": "/piper-navajo/",
+      "permanent": true
+    },
+    {
+      "source": "/muebles.html",
+      "destination": "/muebles-de-diseno/",
+      "permanent": true
+    },
+    {
+      "source": "/nosotros.html",
+      "destination": "/nosotros/",
+      "permanent": true
+    },
+    {
+      "source": "/Piper Navajo/diftra-atelier_11.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/Piper Navajo/piper-navajo.html",
+      "destination": "/piper-navajo/",
+      "permanent": true
+    },
+    {
+      "source": "/Piper Navajo/muebles.html",
+      "destination": "/muebles-de-diseno/",
+      "permanent": true
+    },
+    {
+      "source": "/Piper Navajo/nosotros.html",
+      "destination": "/nosotros/",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/namaste/",
+      "destination": "/namaste.html"
+    },
+    {
+      "source": "/piper-navajo/",
+      "destination": "/piper-navajo.html"
+    },
+    {
+      "source": "/muebles-de-diseno/",
+      "destination": "/muebles.html"
+    },
+    {
+      "source": "/nosotros/",
+      "destination": "/nosotros.html"
+    }
+  ]
+}
